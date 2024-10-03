@@ -7,7 +7,6 @@ const getTileData = async (srv, target, req) => {
     if (aTiles.length === 0) {
         return aTile;
     } else {
-
         var aVisibleTile = aTiles[0].TILE_VISIBLITY;
         for (var t in aVisibleTile) {
             let tileId = aVisibleTile[t];
