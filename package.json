@@ -1,0 +1,35 @@
+{
+  "name": "employeemgmt",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "^1.13.3",
+    "@cap-js/hana": "1.1.0",
+    "@sap/cds": "^7",
+    "@sap/xssec": "^4",
+    "cors": "^2.8.5",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.2.0",
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "d": "cf deploy mta_archives/employeemgmt_1.0.0.mtar",
+    "h": "cds watch --profile hybrid"
+  },
+  "cds": {
+    "requires": {
+      "auth": "dummy",
+      "db": "hana"
+    },
+    "sql": {
+      "native_hana_associations": false
+    }
+  }
+}

@@ -1,0 +1,63 @@
+GET http://localhost:4004/odata/EMPLOYEE
+
+###
+
+DELETE http://localhost:4004/odata/EMPLOYEE(1)
+
+###
+POST http://localhost:4004/odata/EMPLOYEE
+Content-Type: application/json
+
+{
+    "EMP_ID": 5,
+    "EMP_NAME": "Bhavesh",
+    "PASSWORD": "b12345",
+    "PHONE_NO": 6355583965,
+    "EMP_COUNTRY": "India",
+    "EMP_STATUS": true,
+    "TILE_VISIBLITY": [1,2]
+}
+
+
+###
+POST http://localhost:4004/odata/loginEmployee
+Content-Type: application/json
+
+{
+    "EMP_NAME":"Kurvesh",
+    "PASSWORD":"k12345"
+}
+
+###
+GET http://localhost:4004/odata/ADMIN
+
+###
+
+POST http://localhost:4004/odata/loginAdmin
+Content-Type: application/json
+
+{
+    "ADMIN_NAME":"Pratik",
+    "PASSWORD":"p12345"
+}
+
+###
+POST http://localhost:4004/odata/ADMIN
+Content-Type: application/json
+
+{
+    "ADMIN_ID":3,
+    "ADMIN_NAME":"Nainesh",
+    "PASSWORD":"n12345"
+}
+
+###
+
+POST http://localhost:4004/odata/TILE
+Content-Type: application/json
+
+{
+    "TILE_ID":2,
+    "TILE_NAME":"Manage Vendor",
+    "TILE_DESC":"Vendor management by admin"
+}
