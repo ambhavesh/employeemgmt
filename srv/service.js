@@ -35,7 +35,7 @@ module.exports = (srv => {
         let target = EMPLOYEE;
         let tileData = await getTileData(srv, target, req);
         const validateUser = await validateEmployee(req, target);
-        const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
+        const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMAIL', 'PHONE_NO', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
         if (aEmployee.length === 0) {
             var errCode = 404,
                 errMsg = 'User not found';
@@ -102,4 +102,29 @@ module.exports = (srv => {
         }
     });
 
+    srv.on("CHANGE_EMP_PWD", async (req) => {
+        let db = await cds.connect.to('db');
+        let tx = db.tx();
+        try {
+            let { USER_NAME, CURRENT_PWD, NEW_PWD } = req.data;
+            const whereCondition = `EMP_NAME='${USER_NAME}' AND PASSWORD='${CURRENT_PWD}'`;
+            const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'PASSWORD').where(whereCondition);
+            var oEmployee = aEmployee[0];
+            if (oEmployee.EMP_NAME === USER_NAME && oEmployee.PASSWORD === CURRENT_PWD) {
+                oEmployee.PASSWORD = NEW_PWD;
+                const updateEmployee = await tx.update(EMPLOYEE, oEmployee.EMP_ID).with(oEmployee);
+                var oUpdateUser = {
+                    "status": 200,
+                    "message": "Password changed successfully!!",
+                    "results": updateEmployee
+                };
+                tx.commit();
+                let { res } = req.http;
+                res.send(oUpdateUser);
+            } req.error(400, 'Current password is incorrect');
+        } catch (error) {
+            console.log(error);
+        }
+
+    });
 });

@@ -4,6 +4,7 @@ entity EMPLOYEE {
     key EMP_ID         : Integer;
         EMP_NAME       : String;
         PASSWORD       : String;
+        EMAIL          : String;
         PHONE_NO       : Int64;
         EMP_COUNTRY    : String;
         EMP_STATUS     : Boolean;

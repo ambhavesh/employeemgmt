@@ -2,7 +2,7 @@ GET http://localhost:4004/odata/EMPLOYEE
 
 ###
 
-DELETE http://localhost:4004/odata/EMPLOYEE(1)
+DELETE http://localhost:4004/odata/EMPLOYEE(8)
 
 ###
 POST http://localhost:4004/odata/EMPLOYEE
@@ -10,8 +10,8 @@ Content-Type: application/json
 
 {
     "EMP_ID": 5,
-    "EMP_NAME": "Bhavesh",
-    "PASSWORD": "b12345",
+    "EMP_NAME": "Sitaram",
+    "PASSWORD": "s12345",
     "PHONE_NO": 6355583965,
     "EMP_COUNTRY": "India",
     "EMP_STATUS": true,
@@ -46,8 +46,8 @@ POST http://localhost:4004/odata/ADMIN
 Content-Type: application/json
 
 {
-    "ADMIN_ID":3,
-    "ADMIN_NAME":"Nainesh",
+    "ADMIN_ID":9,
+    "ADMIN_NAME":"Nilay",
     "PASSWORD":"n12345"
 }
 
@@ -60,4 +60,25 @@ Content-Type: application/json
     "TILE_ID":2,
     "TILE_NAME":"Manage Vendor",
     "TILE_DESC":"Vendor management by admin"
+}
+
+###
+
+POST http://localhost:4004/odata/CHANGE_EMP_PWD
+Content-Type: application/json
+
+{
+    "USER_NAME":"Priyanka",
+    "CURRENT_PWD":"p123456",
+    "NEW_PWD":"p12345"
+}
+
+###
+POST http://localhost:4004/odata/CHANGE_ADMIN_PWD
+Content-Type: application/json
+
+{
+    "ADMIN_NAME":"Pratik",
+    "CURRENT_PWD":"p123456",
+    "NEW_PWD":"p12345"
 }
