@@ -35,7 +35,7 @@ module.exports = (srv => {
         let target = EMPLOYEE;
         let tileData = await getTileData(srv, target, req);
         const validateUser = await validateEmployee(req, target);
-        const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMAIL', 'PHONE_NO', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
+        const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMAIL', 'MODULE', 'PHONE_NO','EMP_COUNTRY', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
         if (aEmployee.length === 0) {
             var errCode = 404,
                 errMsg = 'User not found';
@@ -123,6 +123,41 @@ module.exports = (srv => {
                 res.send(oUpdateUser);
             } req.error(400, 'Current password is incorrect');
         } catch (error) {
+            console.log(error);
+        }
+
+    });
+
+    srv.on("MassUpdateEmployee", async (req, limit) => {
+        limit = 5;
+        let db = await cds.connect.to('db');
+        let tx = db.tx(req);
+        try {
+            let { EMPLOYEES } = req.data;
+            if (EMPLOYEES.length === 0) {
+                req.error(400, "Please select employees to update");
+            }
+            else if (EMPLOYEES.length > limit) {
+                req.error(429, "Maximum limit exceeded");
+            }
+            else {
+                for (var e in EMPLOYEES) {
+                    const iEmpId = EMPLOYEES[e].EMP_ID;
+                    const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_STATUS','TILE_VISIBLITY').where(`EMP_ID=${iEmpId}`);
+                    aEmployee[0].EMP_STATUS = EMPLOYEES[e].EMP_STATUS;
+                    aEmployee[0].TILE_VISIBLITY = EMPLOYEES[e].TILE_VISIBLITY;
+                    await tx.update(EMPLOYEE, iEmpId).with(aEmployee[0]);
+                }
+                const updatedEmpStatus = {
+                    "status": 202,
+                    "message": "Employees updated successfully"
+                };
+                let { res } = req.http;
+                res.send(updatedEmpStatus)
+            }
+        } catch (error) {
+            // await tx.commit();
+            await tx.rollback(error);
             console.log(error);
         }
 

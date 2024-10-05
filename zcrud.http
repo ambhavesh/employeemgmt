@@ -10,12 +10,13 @@ Content-Type: application/json
 
 {
     "EMP_ID": 5,
-    "EMP_NAME": "Sitaram",
-    "PASSWORD": "s12345",
-    "PHONE_NO": 6355583965,
-    "EMP_COUNTRY": "India",
-    "EMP_STATUS": true,
-    "TILE_VISIBLITY": [1,2]
+    "EMP_NAME": "Vidhi",
+    "PASSWORD": "v12345",
+    "EMAIL":"vidhi@vsdtechno.com",
+    "PHONE_NO": 8990583965,
+    "EMP_COUNTRY": "Uganda",
+    "EMP_STATUS": false,
+    "TILE_VISIBLITY": []
 }
 
 
@@ -82,3 +83,35 @@ Content-Type: application/json
     "CURRENT_PWD":"p123456",
     "NEW_PWD":"p12345"
 }
+
+###
+
+POST http://localhost:4004/odata/MassUpdateEmployee
+Content-Type: application/json
+
+{
+    "EMPLOYEES":
+    [
+        {
+            "EMP_ID":1,
+            "EMP_STATUS":true,
+            "TILE_VISIBLITY":[1]
+        },
+        {
+            "EMP_ID":2,
+            "EMP_STATUS":true,
+            "TILE_VISIBLITY":[1,2,3]
+        },
+        {
+            "EMP_ID":4,
+            "EMP_STATUS":true,
+            "TILE_VISIBLITY":[1,2,3]
+        },
+        {
+            "EMP_ID":9,
+            "EMP_STATUS":false,
+            "TILE_VISIBLITY":[1,3]
+        }
+    ]   
+}
+
