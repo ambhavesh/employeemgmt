@@ -129,7 +129,7 @@ module.exports = (srv => {
     });
 
     srv.on("MassUpdateEmployee", async (req, limit) => {
-        limit = 5;
+        limit = 100;
         let db = await cds.connect.to('db');
         let tx = db.tx(req);
         try {
@@ -156,7 +156,6 @@ module.exports = (srv => {
                 res.send(updatedEmpStatus)
             }
         } catch (error) {
-            // await tx.commit();
             await tx.rollback(error);
             console.log(error);
         }

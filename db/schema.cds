@@ -23,3 +23,24 @@ entity TILE {
         TILE_NAME : String;
         TILE_DESC : String;
 }
+
+entity VENDOR {
+    key vendor_id   : Integer;  
+    name            : String(100);  
+    contact_email   : String(100);  
+    contact_phone   : String(15);   
+    address         : String(200);  
+    city            : String(50);   
+    country         : String(50);   
+}
+
+entity HRMS {
+    key employee_id  : Integer;    
+    name             : String(100);  
+    email            : String(100);  
+    phone            : String(15);  
+    department       : String(50);   
+    position         : String(50);   
+    salary           : Decimal(10, 2);  
+    hire_date        : Date;  
+}

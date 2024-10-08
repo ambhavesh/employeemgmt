@@ -8,6 +8,8 @@ service MyService @(path: '/odata') {
     entity EMPLOYEE as projection on db.EMPLOYEE;
     entity ADMIN    as projection on db.ADMIN;
     entity TILE     as projection on db.TILE;
+    entity HRMS as projection on db.HRMS;
+    entity VENDOR as projection on db.VENDOR;
 
     @open
     type object {};
