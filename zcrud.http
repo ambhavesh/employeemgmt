@@ -26,7 +26,7 @@ Content-Type: application/json
 
 {
     "EMP_NAME":"Kurvesh",
-    "PASSWORD":"k123456"
+    "PASSWORD":"Kurvesh"
 }
 
 ###
@@ -95,17 +95,17 @@ Content-Type: application/json
         {
             "EMP_ID":1,
             "EMP_STATUS":true,
-            "TILE_VISIBLITY":[2]
+            "TILE_VISIBLITY":[]
         },
         {
             "EMP_ID":2,
             "EMP_STATUS":true,
-            "TILE_VISIBLITY":[1]
+            "TILE_VISIBLITY":[1,2]
         },
         {
             "EMP_ID":4,
             "EMP_STATUS":true,
-            "TILE_VISIBLITY":[1]
+            "TILE_VISIBLITY":[1,2,3]
         }
         
     ]   

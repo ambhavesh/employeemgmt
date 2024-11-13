@@ -1,4 +1,5 @@
 const cds = require("@sap/cds");
+const nodemailer = require('nodemailer');
 
 const getTileData = async (srv, target, req) => {
     let aTile = [];
@@ -74,6 +75,28 @@ const validateAdmin = async (req, target) => {
     return oValidatedAdmin
 }
 
+const sendEmail = async (aEmployee) => {
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+            user: process.env.EMAIL_USER,    // Email address
+            pass: 'xokr mmyq zvmm sbgt'     // Email password or app-specific password
+        }
+    });
+
+    const mailInfo = await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: 'patelkurvesh8866@gmail.com',
+        cc: 'patelkurvesh1999@gmail.com',
+        subject: `Logged in user verification.`,
+        text: `Thank you for logging in, you are an authorized user ${aEmployee[0].EMP_NAME}`,
+        html: `<p>Thank you for logging in, you are an authorized user <b>${aEmployee[0].EMP_NAME}</b>.</p>`
+    });
+    console.log(`Mail sent`, mailInfo.messageId);
+}
+
 exports.getTileData = getTileData;
 exports.validateEmployee = validateEmployee;
 exports.validateAdmin = validateAdmin;
+exports.sendEmail = sendEmail;

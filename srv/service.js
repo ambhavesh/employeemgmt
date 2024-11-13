@@ -1,5 +1,6 @@
 const cds = require("@sap/cds");
-const { getTileData, validateEmployee, validateAdmin } = require('../srv/utils/external');
+const { getTileData, validateEmployee, validateAdmin, sendEmail } = require('../srv/utils/external');
+const nodemailer = require('nodemailer');
 
 module.exports = (srv => {
     let { EMPLOYEE, ADMIN, TILE } = srv.entities;
@@ -30,12 +31,55 @@ module.exports = (srv => {
         }
     });
 
+    // srv.on("loginEmployee", async (req) => {
+    //     let { EMP_NAME, PASSWORD } = req.data;
+    //     let target = EMPLOYEE;
+    //     let tileData = await getTileData(srv, target, req);
+    //     const validateUser = await validateEmployee(req, target);
+    //     const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMAIL', 'MODULE', 'PHONE_NO','EMP_COUNTRY', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
+    //     if (aEmployee.length === 0) {
+    //         var errCode = 404,
+    //             errMsg = 'User not found';
+    //         if (validateUser.IsUserValid === false) {
+    //             errMsg = 'Username is incorrect, please enter correct username';
+    //             errCode = 400;
+    //         }
+    //         if (validateUser.IsPasswordValid === false) {
+    //             errMsg = `Password is incorrect, please enter correct password`;
+    //             errCode = 400;
+    //         }
+    //         if (validateUser.IsUserValid === false && validateUser.IsPasswordValid === false) {
+    //             errMsg = 'User not found';
+    //             errCode = 404;
+    //         }
+    //         req.error(errCode, errMsg);
+    //         return;
+    //     } else if (aEmployee[0].EMP_STATUS === false) {
+    //         errMsg = `User is not active`;
+    //         req.error(403, errMsg);
+    //         return;
+    //     } else {
+    //         aEmployee[0].TILE = tileData;
+    //         var oEmployee = {
+    //             "status": 200,
+    //             "message": "Login successfully!!",
+    //             "results": aEmployee
+    //         };
+    //         let { res } = req.http;
+    //         res.send(oEmployee);
+    //     }
+    // });
+
+
+
+
+    // Email Verify
     srv.on("loginEmployee", async (req) => {
         let { EMP_NAME, PASSWORD } = req.data;
         let target = EMPLOYEE;
         let tileData = await getTileData(srv, target, req);
         const validateUser = await validateEmployee(req, target);
-        const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMAIL', 'MODULE', 'PHONE_NO','EMP_COUNTRY', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
+        const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_ID', 'EMP_NAME', 'EMAIL', 'MODULE', 'PHONE_NO', 'EMP_COUNTRY', 'EMP_STATUS').where({ EMP_NAME, PASSWORD });
         if (aEmployee.length === 0) {
             var errCode = 404,
                 errMsg = 'User not found';
@@ -58,6 +102,7 @@ module.exports = (srv => {
             req.error(403, errMsg);
             return;
         } else {
+            await sendEmail(aEmployee);
             aEmployee[0].TILE = tileData;
             var oEmployee = {
                 "status": 200,
@@ -66,6 +111,7 @@ module.exports = (srv => {
             };
             let { res } = req.http;
             res.send(oEmployee);
+
         }
     });
 
@@ -143,10 +189,11 @@ module.exports = (srv => {
             else {
                 for (var e in EMPLOYEES) {
                     const iEmpId = EMPLOYEES[e].EMP_ID;
-                    const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_STATUS','TILE_VISIBLITY').where(`EMP_ID=${iEmpId}`);
+                    const aEmployee = await SELECT.from(EMPLOYEE).columns('EMP_STATUS', 'TILE_VISIBLITY').where(`EMP_ID=${iEmpId}`);
                     aEmployee[0].EMP_STATUS = EMPLOYEES[e].EMP_STATUS;
                     aEmployee[0].TILE_VISIBLITY = EMPLOYEES[e].TILE_VISIBLITY;
                     await tx.update(EMPLOYEE, iEmpId).with(aEmployee[0]);
+                    //  tx.commit();
                 }
                 const updatedEmpStatus = {
                     "status": 202,
