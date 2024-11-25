@@ -85,13 +85,19 @@ const sendEmail = async (aEmployee) => {
         }
     });
 
+
     const mailInfo = await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: 'patelkurvesh8866@gmail.com',
-        cc: 'patelkurvesh1999@gmail.com',
+        cc: 'sonalsarkar799@gmail.com',
         subject: `Logged in user verification.`,
         text: `Thank you for logging in, you are an authorized user ${aEmployee[0].EMP_NAME}`,
-        html: `<p>Thank you for logging in, you are an authorized user <b>${aEmployee[0].EMP_NAME}</b>.</p>`
+        html: `<p>Thank you for logging in, you are an authorized user <b>${aEmployee[0].EMP_NAME}</b>.</p>`,
+        attachments: [{
+            filename: 'Bhavesh_SAP_5+.pdf',
+            path: '/home/user/projects/employeemgmt/files/Bhavesh_SAP_5+.pdf'
+
+        }]
     });
     console.log(`Mail sent`, mailInfo.messageId);
 }
